@@ -3,65 +3,27 @@ const express = require('express');
 //Create a new instance of express
 const app = express();
 
-const FormData = require("form-data");
-
 const bodyParser = require("body-parser");
 //This allows parsing of the body of POST requests, that are encoded in JSON
 app.use(bodyParser.json());
-//We use this create the SHA256 hash
-const crypto = require("crypto");
-//pg-promise is a postgres library that uses javascript promises
-const pgp = require('pg-promise')();
-//We have to set ssl usage to true for Heroku to accept our connection
-pgp.pg.defaults.ssl = true;
 
-//Create connection to Heroku Database
-let db;
-//Uncomment next line and change the string to your DATABASE_URL
-//db = pgp('<SET ME TO Result of `heroku config:get DATABASE_URL -a tcss450`');
+var log = require('./routes/login.js');
+app.use('/login', log);
 
-//if(!db) {
-//    console.log("SHAME! Follow the intructions and set your DATABASE_URL correctly");
-//    process.exit(1);
-//}
+var reg = require('./routes/register.js');
+app.use('/register', reg);
 
+var hello = require('./routes/hello.js');
+app.use('/hello', hello);
 
-/**
- * Method to get a salted hash.
- * We put this in its own method to keep consistency
- * @param {string} pw the password to hash
- * @param {string} salt the salt to use when hashing
- */
-function getHash(pw, salt) {
-    return crypto.createHash("sha256").update(pw + salt).digest("hex");
-}
+var params = require('./routes/params.js');
+app.use('/params', params);
 
+var wait = require('./routes/wait.js');
+app.use('/wait', wait);
 
-function sendEmail(from, to, subject, message) {
-    let form = new FormData();
-    form.append("from", from);
-    form.append("to", to);
-    form.append("subject", subject);
-    form.append("message", message);
-    form.submit("http://cssgate.insttech.washington.edu/~cfb3/mail.php", (err, res) => {
-        if(err) console.error(err);
-        console.log(res);
-    });
-}
-
-
-//app.get('/users') means accept http 'GET' requests at path '/users'
-app.post('/login', (req, res) => {
-});
-
-
-//app.post('/register') means accept http 'POST' requests at path "/release"
-app.post("/register", (req, res) => {  
-});
-
-
-
-
+var demosql = require('./routes/demosql.js');
+app.use('/demosql', demosql);
 
 /*
  * Return HTML for the / end point. 
