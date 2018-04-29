@@ -18,7 +18,7 @@ var router = express.Router();
 
 //app.get('/users') means accept http 'GET' requests at path '/users'
 router.post('/', (req, res) => {
-    let user = req.body['username'];
+    let user = req.body['email'];
     let theirPw = req.body['password'];
     let wasSuccessful = false;
     if(user && theirPw) {
