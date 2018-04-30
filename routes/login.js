@@ -18,12 +18,12 @@ var router = express.Router();
 
 //app.get('/users') means accept http 'GET' requests at path '/users'
 router.post('/', (req, res) => {
-    let user = req.body['email'];
+    let email = req.body['email'];
     let theirPw = req.body['password'];
     let wasSuccessful = false;
-    if(user && theirPw) {
+    if(email && theirPw) {
         //Using the 'one' method means that only one row should be returned
-        db.one('SELECT Password, Salt FROM Members WHERE Username=$1', [user])
+        db.one('SELECT Password, Salt FROM Members WHERE Email=$1', [email])
         //If successful, run function passed into .then()
         .then(row => {
             let salt = row['salt'];
