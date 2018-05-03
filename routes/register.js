@@ -24,9 +24,32 @@ router.post('/', (req, res) => {
     var username = req.body['username'];
     var email = req.body['email'];
     var password = req.body['password'];
-    //Verify that the caller supplied all the parameters
-    //In js, empty strings or null values evaluate to false
+    
     if(first && last && username && email && password) {
+        var good = true;
+        var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+
+        if(!pattern.test(email)){
+            good = false;
+        }
+        if(username.length() < 3){
+            good = false;
+        }
+        if(password.length() < 6 || passcopy.length() < 6){
+            good = false;
+        }
+        if(password !== passcopy){
+            good = false;
+        }
+        if(!good){
+            res.send({
+                success: false,
+                input: req.body,
+                error: "Incorrct user information"});
+                break;
+        }
+
+        
         //We're storing salted hashes to make our application more secure
         //If you're interested as to what that is, and why we should use it
         //watch this youtube video: https://www.youtube.com/watch?v=8ZtInClXe1Q
