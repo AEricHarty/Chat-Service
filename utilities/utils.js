@@ -27,6 +27,10 @@ function getHash(pw, salt) {
     return crypto.createHash("sha256").update(pw + salt).digest("hex");
 }
 
+function generateVerificationCode() {
+    return Math.ceil(Math.random()*10000);
+}
+
 module.exports = {
     db, getHash, sendEmail
 };
