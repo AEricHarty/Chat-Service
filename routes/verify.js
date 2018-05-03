@@ -45,13 +45,13 @@ router.post('/', (req, res) => {
             //If anything happened, it wasn't successful
             res.send({
                 success: false,
-                message: err
+                message: 'Verification code is incorrect.'
             });
         });
     } else {
         res.send({
             success: false,
-            message: 'Verification code is incorrect.'
+            message: err
         });
     }
 });
