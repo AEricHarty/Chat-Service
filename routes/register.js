@@ -69,11 +69,7 @@ router.post('/', (req, res) => {
             res.send({
                 success: true
             });
-<<<<<<< HEAD
-            sendEmail("cfb3@uw.edu", email, "Welcome!", "<strong>Welcome to our app!. Please confirm your account by entering your verification code: ${code}.</strong>");
-=======
-            sendEmail("No-reply@chat", email, "Welcome!", "<strong>Welcome to our app!</strong>");
->>>>>>> f671a37d60bc827143c5d908410e76882f114b99
+            sendEmail("No-reply@chat", email, "Welcome!", "<strong>Welcome to our app!. Please confirm your account by entering your verification code: ${code}.</strong>");
         }).catch((err) => {
             //log the error
             console.log(err);
