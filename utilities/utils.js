@@ -32,5 +32,5 @@ function generateVerificationCode() {
 }
 
 module.exports = {
-    db, getHash, sendEmail
+    db, getHash, sendEmail, generateVerificationCode
 };
