@@ -1,11 +1,7 @@
 //express is the framework we're going to use to handle requests
 const express = require('express');
-//Create a new instance of express
-const app = express();
 
 const bodyParser = require("body-parser");
-//This allows parsing of the body of POST requests, that are encoded in JSON
-app.use(bodyParser.json());
 
 //We use this create the SHA256 hash
 const crypto = require("crypto");
@@ -18,6 +14,7 @@ let getHash = require('../utilities/utils').getHash;
 let sendEmail = require('../utilities/utils').sendEmail;
 
 var router = express.Router();
+router.use(bodyParser.json());
 
 router.post('/', (req, res) => {
     res.type("application/json");
@@ -46,7 +43,7 @@ router.post('/', (req, res) => {
             res.send({
                 success: true
             });
-            sendEmail("cfb3@uw.edu", email, "Welcome!", "<strong>Welcome to our app!</strong>");
+            sendEmail("No-reply@chat", email, "Welcome!", "<strong>Welcome to our app!</strong>");
         }).catch((err) => {
             //log the error
             console.log(err);

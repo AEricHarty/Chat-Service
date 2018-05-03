@@ -3,10 +3,6 @@ const express = require('express');
 //Create a new instance of express
 const app = express();
 
-const bodyParser = require("body-parser");
-//This allows parsing of the body of POST requests, that are encoded in JSON
-app.use(bodyParser.json());
-
 var log = require('./routes/login.js');
 app.use('/login', log);
 
