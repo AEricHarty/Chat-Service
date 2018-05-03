@@ -10,6 +10,9 @@ app.use(bodyParser.json());
 var log = require('./routes/login.js');
 app.use('/login', log);
 
+var log = require('./routes/verify.js');
+app.use('/verify', log);
+
 var reg = require('./routes/register.js');
 app.use('/register', reg);
 
