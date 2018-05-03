@@ -6,8 +6,8 @@ const app = express();
 var log = require('./routes/login.js');
 app.use('/login', log);
 
-var log = require('./routes/verify.js');
-app.use('/verify', log);
+var verify = require('./routes/verify.js');
+app.use('/verify', verify);
 
 var reg = require('./routes/register.js');
 app.use('/register', reg);
