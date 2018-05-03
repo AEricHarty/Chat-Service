@@ -48,8 +48,7 @@ router.post('/', (req, res) => {
             res.send({
                 success: false,
                 input: req.body,
-                error: "Incorrct user information"});
-                break;
+                error: "Incorrect user information"});
         }
         
         //We're storing salted hashes to make our application more secure
