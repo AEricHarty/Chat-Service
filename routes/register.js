@@ -1,7 +1,11 @@
 //express is the framework we're going to use to handle requests
 const express = require('express');
+//Create a new instance of express
+const app = express();
 
 const bodyParser = require("body-parser");
+//This allows parsing of the body of POST requests, that are encoded in JSON
+app.use(bodyParser.json());
 
 //We use this create the SHA256 hash
 const crypto = require("crypto");
@@ -13,10 +17,9 @@ let getHash = require('../utilities/utils').getHash;
 
 let sendEmail = require('../utilities/utils').sendEmail;
 
-let getVerificationCode = require('..utilities/utils').generateVerificationCode;
+let getVerificationCode = require('../utilities/utils').generateVerificationCode;
 
 var router = express.Router();
-router.use(bodyParser.json());
 
 router.post('/', (req, res) => {
     res.type("application/json");
@@ -26,9 +29,29 @@ router.post('/', (req, res) => {
     var username = req.body['username'];
     var email = req.body['email'];
     var password = req.body['password'];
-    //Verify that the caller supplied all the parameters
-    //In js, empty strings or null values evaluate to false
     if(first && last && username && email && password) {
+        var good = true;
+        var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+        if(!pattern.test(email)){
+            good = false;
+        }
+        if(username.length() < 3){
+            good = false;
+        }
+        if(password.length() < 6 || passcopy.length() < 6){
+            good = false;
+        }
+        if(password !== passcopy){
+            good = false;
+        }
+        if(!good){
+            res.send({
+                success: false,
+                input: req.body,
+                error: "Incorrct user information"});
+                break;
+        }
+        
         //We're storing salted hashes to make our application more secure
         //If you're interested as to what that is, and why we should use it
         //watch this youtube video: https://www.youtube.com/watch?v=8ZtInClXe1Q
