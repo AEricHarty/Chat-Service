@@ -17,11 +17,13 @@ let getHash = require('../utilities/utils').getHash;
 
 let sendEmail = require('../utilities/utils').sendEmail;
 
-let getVerificationCode = require('../utilities/utils').generateVerificationCode;
+let generateVerificationCode = require('../utilities/utils').generateVerificationCode;
 
 var router = express.Router();
 
-router.post('/', (req, res) => {
+router.use(bodyParser.json());
+
+router.post("/", (req, res) => {
     res.type("application/json");
     //Retrieve data from query params
     var first = req.body['first'];
@@ -35,20 +37,16 @@ router.post('/', (req, res) => {
         if(!pattern.test(email)){
             good = false;
         }
-        if(username.length() < 3){
+        if(username.length < 3){
             good = false;
         }
-        if(password.length() < 6 || passcopy.length() < 6){
-            good = false;
-        }
-        if(password !== passcopy){
-            good = false;
-        }
+
         if(!good){
             res.send({
                 success: false,
-                input: req.body,
-                error: "Incorrect user information"});
+                input: req.body
+                //error: "Incorrect user information"
+            });
         }
         
         //We're storing salted hashes to make our application more secure
@@ -56,7 +54,7 @@ router.post('/', (req, res) => {
         //watch this youtube video: https://www.youtube.com/watch?v=8ZtInClXe1Q
         let salt = crypto.randomBytes(32).toString("hex");
         let salted_hash = getHash(password, salt);
-        let code = getVerificationCode;
+        let code = generateVerificationCode();
 
         //Use .none() since no result gets returned from an INSERT in SQL
         //We're using placeholders ($1, $2, $3) in the SQL query string to avoid SQL Injection
@@ -66,12 +64,13 @@ router.post('/', (req, res) => {
         .then(() => {
             //We successfully added the user, let the user know
             res.send({
-                success: true
+                success: true,
+                message: 'Code is ' + code + '.'
             });
-            sendEmail("No-reply@chat", email, "Welcome!", "<strong>Welcome to our app!. Please confirm your account by entering your verification code: ${code}.</strong>");
+            sendEmail("No-reply@chat", email, "Welcome!", "<strong> Welcome to our app!. Please confirm your account by entering your verification code: " + code + ". </strong>");
         }).catch((err) => {
             //log the error
-            console.log(err);
+            //console.log(err);
              //If we get an error, it most likely means the account already exists
             //Therefore, let the requester know they tried to create an account that already exists
             res.send({
@@ -83,7 +82,8 @@ router.post('/', (req, res) => {
         res.send({
             success: false,
             input: req.body,
-            error: "Missing required user information"});
+            error: "Missing required user information"
+        });
     }
 });
 

@@ -1,25 +1,19 @@
 //express is the framework we're going to use to handle requests
 const express = require('express');
-//Create a new instance of express
-const app = express();
 
 const bodyParser = require("body-parser");
-//This allows parsing of the body of POST requests, that are encoded in JSON
-app.use(bodyParser.json());
 
 //Create connection to Heroku Database
 let db = require('../utilities/utils').db;
 
-let getVerificationCode = require('../utilities/utils').generateVerificationCode;
-
 var router = express.Router();
+router.use(bodyParser.json());
 
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
     res.type("application/json");
     var username = req.body['username'];
     var email = req.body['email'];
     var code = req.body['code'];
-
     if(username && email && code) {
         let params = [username, email, code];
 
@@ -31,7 +25,7 @@ router.post('/', (req, res) => {
             .then(() => {
                 res.send({
                     success: true,
-                    message: 'Your account is now verified.'
+                    message: 'Your account is now verified.' + code
                 });
             }).catch((err) => {
                 res.send({
@@ -51,7 +45,7 @@ router.post('/', (req, res) => {
     } else {
         res.send({
             success: false,
-            message: err
+            message: "Credentials incorrect"
         });
     }
 });
