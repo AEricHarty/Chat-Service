@@ -9,7 +9,7 @@ function sendEmail(from, to, subject, message) {
     form.append("from", from);
     form.append("to", to);
     form.append("subject", subject);
-    form.append("message", message);
+    form.append("body", message);
     form.submit("http://cssgate.insttech.washington.edu/~cfb3/mail.php", (err,
     res) => {
         if(err) console.error(err);
