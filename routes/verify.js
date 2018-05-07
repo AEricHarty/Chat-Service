@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 //Create connection to Heroku Database
 let db = require('../utilities/utils').db;
 
-let getVerificationCode = require('..utilities/utils').generateVerificationCode;
+let getVerificationCode = require('../utilities/utils').generateVerificationCode;
 
 var router = express.Router();
 

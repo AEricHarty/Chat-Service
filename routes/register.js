@@ -13,7 +13,7 @@ let getHash = require('../utilities/utils').getHash;
 
 let sendEmail = require('../utilities/utils').sendEmail;
 
-let getVerificationCode = require('..utilities/utils').generateVerificationCode;
+let getVerificationCode = require('../utilities/utils').generateVerificationCode;
 
 var router = express.Router();
 router.use(bodyParser.json());
@@ -48,7 +48,7 @@ router.post('/', (req, res) => {
                 success: false,
                 input: req.body,
                 error: "Incorrct user information"});
-                break;
+                return;
         }
 
         
