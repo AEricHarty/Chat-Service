@@ -24,6 +24,9 @@ app.use('/wait', wait);
 var demosql = require('./routes/demosql.js');
 app.use('/demosql', demosql);
 
+var msg = require('./routes/messages.js');
+app.use('/', msg);
+
 /*
  * Return HTML for the / end point. 
  * This is a nice location to document your web service API
