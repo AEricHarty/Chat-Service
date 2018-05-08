@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
             }).catch((err) => {
                 res.send({
                     success: false,
-                    message: err
+                    message: 'Encountered problem when trying to update verification.'
                 });
             });
         })
