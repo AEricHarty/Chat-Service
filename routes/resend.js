@@ -17,7 +17,6 @@ router.post('/', (req, res) => {
     res.type("application/json");
     var username = req.body['username'];
     var email = req.body['email'];
-    console.log(username + " " + email);
     if(username && email) {
         //Using the 'one' method means that only one row should be returned
         db.one("SELECT * FROM Members WHERE username=$1 AND email=$2 AND Verification=0", [username, email])
@@ -42,7 +41,6 @@ router.post('/', (req, res) => {
         })
         //More than one row shouldn't be found
         .catch((err) => {
-            console.log(err);
             //If anything happened, it wasn't successful
             res.send({
                 success: false,
