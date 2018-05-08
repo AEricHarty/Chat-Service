@@ -12,6 +12,9 @@ app.use('/verify', verify);
 var reg = require('./routes/register.js');
 app.use('/register', reg);
 
+var resend = require('./routes/resend.js');
+app.use('/resend', resend);
+
 var hello = require('./routes/hello.js');
 app.use('/hello', hello);
 
