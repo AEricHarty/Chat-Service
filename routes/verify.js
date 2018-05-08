@@ -25,7 +25,7 @@ router.post("/", (req, res) => {
             .then(() => {
                 res.send({
                     success: true,
-                    message: 'Your account is now verified.' + code
+                    message: 'Your account is now verified.'
                 });
             }).catch((err) => {
                 res.send({

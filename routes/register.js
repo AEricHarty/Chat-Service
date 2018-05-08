@@ -65,7 +65,7 @@ router.post("/", (req, res) => {
             //We successfully added the user, let the user know
             res.send({
                 success: true,
-                message: 'Code is ' + code + '.'
+                message: 'Please check your email for verification code'
             });
             sendEmail("No-reply@chat", email, "Welcome!", "<strong> Welcome to our app!. Please confirm your account by entering your verification code: " + code + ". </strong>");
         }).catch((err) => {
