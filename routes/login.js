@@ -15,12 +15,12 @@ router.use(bodyParser.json());
 
 //app.get('/users') means accept http 'GET' requests at path '/users'
 router.post('/', (req, res) => {
-    let email = req.body['email'];
+    let username = req.body['username'];
     let theirPw = req.body['password'];
     let wasSuccessful = false;
-    if(email && theirPw) {
+    if(username && theirPw) {
         //Using the 'one' method means that only one row should be returned
-        db.one('SELECT Password, Salt FROM Members WHERE Email=$1 AND Verification=1', [email])
+        db.one('SELECT Password, Salt FROM Members WHERE Username=$1 AND Verification=1', [username])
         //If successful, run function passed into .then()
         .then(row => {
             let salt = row['salt'];
