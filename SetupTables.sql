@@ -7,7 +7,7 @@ CREATE TABLE Members (MemberID SERIAL PRIMARY KEY,
                       Password VARCHAR(255) NOT NULL,
                       SALT VARCHAR(255),
                       VerificationCode VARCHAR(4),
-                      Verification INT DEFAULT 0
+                      Verification INT DEFAULT 0,
                       TimeCreated TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp
 );
 
