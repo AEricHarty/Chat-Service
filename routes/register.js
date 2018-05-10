@@ -4,8 +4,6 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require("body-parser");
-//This allows parsing of the body of POST requests, that are encoded in JSON
-app.use(bodyParser.json());
 
 //We use this create the SHA256 hash
 const crypto = require("crypto");
@@ -20,7 +18,6 @@ let sendEmail = require('../utilities/utils').sendEmail;
 let generateVerificationCode = require('../utilities/utils').generateVerificationCode;
 
 var router = express.Router();
-
 router.use(bodyParser.json());
 
 router.post("/", (req, res) => {
@@ -69,6 +66,9 @@ router.post("/", (req, res) => {
             });
             sendEmail("No-reply@chat", email, "Welcome!", "<strong> Welcome to our app!. Please confirm your account by entering your verification code: " + code + ". </strong>");
         }).catch((err) => {
+            // Here we should check if the user is registered but not verified and
+            // if so replace the old entry with the new one and send a new verification code
+            
             //log the error
             //console.log(err);
              //If we get an error, it most likely means the account already exists
