@@ -57,5 +57,4 @@ router.get("/getMessages", (req, res) => {
     });
 });
 
-
 module.exports = router;
