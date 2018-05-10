@@ -69,6 +69,9 @@ router.post("/", (req, res) => {
             });
             sendEmail("No-reply@chat", email, "Welcome!", "<strong> Welcome to our app!. Please confirm your account by entering your verification code: " + code + ". </strong>");
         }).catch((err) => {
+            // Here we should check if the user is registered but not verified and
+            // if so replace the old entry with the new one and send a new verification code
+            
             //log the error
             //console.log(err);
              //If we get an error, it most likely means the account already exists
