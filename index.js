@@ -30,8 +30,8 @@ app.use('/demosql', demosql);
 var msg = require('./routes/messages.js');
 app.use('/', msg);
 
-var getContacts = require('./routes/contacts.js');
-app.use('/', getContacts);
+var request = require('./routes/request.js');
+app.use('/', request);
 
 /*
  * Return HTML for the / end point. 
