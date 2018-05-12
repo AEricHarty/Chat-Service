@@ -25,6 +25,7 @@ router.get("/incoming", (req, res) => {
     db.manyOrNone(query,[clientUsername])
     .then((rows) => {
         res.send({
+            username: clientUsername,
             incomming: rows
         })
     }).catch((err) => {
