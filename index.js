@@ -34,7 +34,7 @@ var request = require('./routes/request.js');
 app.use('/', request);
 
 var incoming_requests = require('./routes/incoming_connection_request.js');
-app.use('/incoming_requests', incomming_request);
+app.use('/incoming_requests', incoming_requests);
 
 /*
  * Return HTML for the / end point. 
