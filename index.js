@@ -33,8 +33,8 @@ app.use('/', msg);
 var request = require('./routes/request.js');
 app.use('/', request);
 
-var incoming_requests = require('./routes/incoming_connection_request.js');
-app.use('/incoming_requests', incoming_requests);
+var incoming_request = require('./routes/incoming_connection_request.js');
+app.use('/incoming_request', incoming_request);
 
 /*
  * Return HTML for the / end point. 
