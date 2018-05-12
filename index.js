@@ -30,6 +30,9 @@ app.use('/demosql', demosql);
 var msg = require('./routes/messages.js');
 app.use('/', msg);
 
+var getContacts = require('./routes/contacts.js');
+app.use('/', getContacts);
+
 /*
  * Return HTML for the / end point. 
  * This is a nice location to document your web service API
