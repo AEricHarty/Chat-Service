@@ -33,6 +33,9 @@ app.use('/', msg);
 var request = require('./routes/request.js');
 app.use('/', request);
 
+var pending_requests = require('./routes/pending_connection_request.js');
+app.use('/pending_request', pending_requests);
+
 /*
  * Return HTML for the / end point. 
  * This is a nice location to document your web service API
