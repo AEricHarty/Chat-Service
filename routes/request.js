@@ -8,8 +8,8 @@ let db = require('../utilities/utils').db;
 var router = express.Router();
 
 router.post("/sendRequest", (req, res) => {
-    let username = req.body['memberid_a'];
-    let connection = req.body['memberid_b'];
+    let username = req.body['username'];
+    let connection = req.body['connection'];
     let verified = req.body['verified'];
     if(!username || !connection || !verified) {
         res.send({
