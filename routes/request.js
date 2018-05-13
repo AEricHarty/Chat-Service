@@ -31,7 +31,7 @@ router.post("/sendRequest", (req, res) => {
                    (3, #3)`
                    */
     let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
-                   VALUES(10, 20, 0)`
+                   VALUES(32, 47, 0)`
     db.none(insert1, [username, connection, verified])
     .then(() => {
         res.send({
