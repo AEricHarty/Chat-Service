@@ -10,11 +10,11 @@ var router = express.Router();
 router.post("/sendRequest", (req, res) => {
     let username = req.body['username'];
     let connection = req.body['connection'];
-    let verified = req.body['verified'];
-    if(!username || !connection || !verified) {
+    
+    if(!username || !connection) {
         res.send({
             success: false,
-            error: "Username, connectionName, or verification not supplied"
+            error: "Username or newConnectionName not supplied"
         });
         return;
     }
@@ -24,22 +24,32 @@ router.post("/sendRequest", (req, res) => {
                   WHERE Username=$3`
     db.none(insert, [chatId, message, username]) */              
                   
-                  /*
+    /*
     let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
-                   VALUES(32, 50, 0)`
-                   */
+                   VALUES(2, 32, 0)`
+    */     
 
-                   
+    /*
     let insert1 = `INSERT INTO contacts (memberid_a, memberid_b, verified) 
                    VALUES ((SELECT memberid 
                             FROM members 
-                            WHERE username=$1), 
+                            WHERE username LIKE $1), 
                            (SELECT memberid 
                             FROM members 
-                            WHERE username=$2),
-                            #3);`
+                            WHERE username LIKE $2),
+                            0)`
+                  */          
+
+    let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
+                    VALUES ((SELECT memberid 
+                    FROM members 
+                    WHERE username LIKE $1), 
+                    (SELECT memberid 
+                        FROM members 
+                        WHERE username LIKE $2),
+                    0);`
                    
-    db.none(insert1, [username, connection, verified])
+    db.none(insert1, [username, connection])
     .then(() => {
         res.send({
             success: true
