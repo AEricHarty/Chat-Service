@@ -24,14 +24,21 @@ router.post("/sendRequest", (req, res) => {
                   WHERE Username=$3`
     db.none(insert, [chatId, message, username]) */              
                   
-    /*
-    let insert1 = `INSERT INTO contacts (memberid_a, memberid_b, verified) 
-                   values (1, (SELECT memberid FROM members WHERE username=$1)), 
-                   (2, (SELECT memberid FROM members WHERE username=$1)),
-                   (3, #3)`
-                   */
+                  /*
     let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
                    VALUES(32, 50, 0)`
+                   */
+
+                   
+    let insert1 = `INSERT INTO contacts (memberid_a, memberid_b, verified) 
+                   VALUES ((SELECT memberid 
+                            FROM members 
+                            WHERE username=$1), 
+                           (SELECT memberid 
+                            FROM members 
+                            WHERE username=$2),
+                            #3);`
+                   
     db.none(insert1, [username, connection, verified])
     .then(() => {
         res.send({
