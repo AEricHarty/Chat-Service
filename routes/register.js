@@ -57,6 +57,18 @@ router.post("/", (req, res) => {
         //We're using placeholders ($1, $2, $3) in the SQL query string to avoid SQL Injection
         //If you want to read more: https://stackoverflow.com/a/8265319
         let params = [first, last, username, email, salted_hash, salt, code];
+
+        let precheck = 'DELETE FROM Members WHERE username=$1 AND Verification=0'
+        db.manyOrNone(precheck, [username])
+        .catch((err) => {
+            res.send({
+                success: false,
+                message: 'Problem occured when checking and deleting unverified account(s) with same username.',
+                error: err
+            });
+        });
+
+
         db.none("INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt, VerificationCode) VALUES ($1, $2, $3, $4, $5, $6, $7)", params)
         .then(() => {
             //We successfully added the user, let the user know
@@ -68,7 +80,6 @@ router.post("/", (req, res) => {
         }).catch((err) => {
             // Here we should check if the user is registered but not verified and
             // if so replace the old entry with the new one and send a new verification code
-            
             //log the error
             //console.log(err);
              //If we get an error, it most likely means the account already exists

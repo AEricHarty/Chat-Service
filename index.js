@@ -33,8 +33,11 @@ app.use('/', msg);
 var request = require('./routes/request.js');
 app.use('/', request);
 
-var incoming_request = require('./routes/incoming_connection_request.js');
-app.use('/incoming_request', incoming_request);
+var contacts = require('./routes/contacts.js');
+app.use('/',contacts);
+
+var pending_requests = require('./routes/pending_connection_request.js');
+app.use('/pending_request', pending_requests);
 
 /*
  * Return HTML for the / end point. 
