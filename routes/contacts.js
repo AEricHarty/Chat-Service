@@ -15,7 +15,7 @@ router.post("/searchContact", (req, res) => {
         });
         return;
     }
-    let search = 'SELECT M.FirstName, M.LastName, M.Username, M.Email FROM Members M WHERE ((LOWER(M.FirstName) LIKE \'%' + term + '%\' OR LOWER(M.LastName) LIKE \'%' + term + '%\' OR LOWER(M.Username) LIKE \'%' + term + '%\' OR LOWER(M.Email) LIKE \'%' + term + '%\') AND (NOT M.username=$1)) EXCEPT SELECT M2.FirstName, M2.LastName, M2.Username, M2.Email FROM Members M2  INNER JOIN Contacts C2 ON (M2.memberid=C2.memberid_b) WHERE C2.memberid_a=(SELECT memberid FROM Members WHERE username=$1) AND C2.Verified=1'
+    let search = 'SELECT M.FirstName, M.LastName, M.Username, M.Email FROM Members M WHERE ((LOWER(M.FirstName) LIKE \'%' + term + '%\' OR LOWER(M.LastName) LIKE \'%' + term + '%\' OR LOWER(M.Username) LIKE \'%' + term + '%\' OR LOWER(M.Email) LIKE \'%' + term + '%\') AND (NOT M.username=$1)) EXCEPT SELECT M2.FirstName, M2.LastName, M2.Username, M2.Email FROM Members M2  INNER JOIN Contacts C2 ON (M2.memberid=C2.memberid_b) WHERE C2.memberid_a=(SELECT memberid FROM Members WHERE username=$1)'
 
     // let search = 'SELECT M.memberid, M.FirstName, M.LastName, M.Username, M.Email FROM Members M WHERE (M.FirstName LIKE \'%' + term + '%\' OR M.LastName LIKE \'%' + term + '%\' OR M.Username LIKE \'%' + term + '%\' OR M.Email LIKE \'%' + term + '%\')'
     //console.log(search);
