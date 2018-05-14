@@ -8,13 +8,13 @@ let db = require('../utilities/utils').db;
 var router = express.Router();
 
 router.post("/sendRequest", (req, res) => {
-    let username = req.body['memberid_a'];
-    let connection = req.body['memberid_b'];
-    let verified = req.body['verified'];
-    if(!username || !connection || !verified) {
+    let username = req.body['username'];
+    let connection = req.body['connection'];
+    
+    if(!username || !connection) {
         res.send({
             success: false,
-            error: "Username, connectionName, or verification not supplied"
+            error: "Username or newConnectionName not supplied"
         });
         return;
     }
@@ -25,14 +25,31 @@ router.post("/sendRequest", (req, res) => {
     db.none(insert, [chatId, message, username]) */              
                   
     /*
-    let insert1 = `INSERT INTO contacts (memberid_a, memberid_b, verified) 
-                   values (1, (SELECT memberid FROM members WHERE username=$1)), 
-                   (2, (SELECT memberid FROM members WHERE username=$1)),
-                   (3, #3)`
-                   */
     let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
-                   VALUES(10, 20, 0)`
-    db.none(insert1, [username, connection, verified])
+                   VALUES(2, 32, 0)`
+    */     
+
+    /*
+    let insert1 = `INSERT INTO contacts (memberid_a, memberid_b, verified) 
+                   VALUES ((SELECT memberid 
+                            FROM members 
+                            WHERE username LIKE $1), 
+                           (SELECT memberid 
+                            FROM members 
+                            WHERE username LIKE $2),
+                            0)`
+                  */          
+
+    let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
+                    VALUES ((SELECT memberid 
+                    FROM members 
+                    WHERE username LIKE $1), 
+                    (SELECT memberid 
+                        FROM members 
+                        WHERE username LIKE $2),
+                    0);`
+                   
+    db.none(insert1, [username, connection])
     .then(() => {
         res.send({
             success: true
