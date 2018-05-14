@@ -43,13 +43,11 @@ router.post("/incoming", (req, res) => {
     let decision = req.body['answer'];
 
     if(decision) {
+        let successed = true;
         // Verify request.
         let query ='UPDATE Contacts SET verified =1 WHERE memberid_a = (SELECT memberid FROM Members WHERE username = $2) AND memberid_b = (SELECT memberid FROM Members WHERE username = $1)'
         db.none(query, [clientUsername, otherUsername])
         .then(() => {
-            res.send({
-                success: true
-            })
         }).catch((err) =>{
             res.send({
                 success: false,
@@ -60,9 +58,6 @@ router.post("/incoming", (req, res) => {
         let query = 'DELETE FROM Contacts WHERE memberid_a = (SELECT memberid FROM Members WHERE username=$1) AND memberid_b =(SELECT memberid FROM Members WHERE username=$2)'
         db.none(query, [clientUsername, otherUsername])
         .then(() => {
-            res.send({
-                success: true
-            })
         }).catch((err) =>{
             res.send({
                 success: false,
@@ -73,9 +68,11 @@ router.post("/incoming", (req, res) => {
         let query = 'INSERT INTO Contacts (memberid_a, memberid_b, verified) VALUES ((SELECT memberid FROM Members WHERE username=$1), (SELECT memberid FROM Members WHERE username=$2), 1)'
         db.none(query, [clientUsername, otherUsername])
         .then(() => {
-            res.send({
-                success: true
-            })
+            if (successed){
+                res.send({
+                    success: true
+                })
+            }
         }).catch((err) =>{
             res.send({
                 success: false,
