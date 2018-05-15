@@ -25,8 +25,8 @@ router.get("/incoming", (req, res) => {
     db.manyOrNone(query,[clientUsername])
     .then((rows) => {
         res.send({
-            username: clientUsername,
-            incomming: rows
+            success:true,
+            incoming: rows
         })
     }).catch((err) => {
         res.send({
@@ -37,19 +37,38 @@ router.get("/incoming", (req, res) => {
 });
 
 //used to respond to incoming connection request.
+// answer should be 1 for accept or 0 for deny.
 router.post("/incoming", (req, res) => {
     let clientUsername = req.body['username'];
     let otherUsername = req.body['otherUsername'];
     let decision = req.body['answer'];
 
     if(decision) {
-        // confirm request = update Contacts.verified to true.
-        let query ='UPDATE Contacts SET verified =1 WHERE memberid_a = (SELECT memberid FROM Members WHERE username = $2) AND memberid_b = (SELECT memberid FROM Members WHERE username = $1)'
-        db.none(query, [clientUsername, otherUsername])
+        // Verify request, then delete any requests in opposite direction, then add verified conection in opposite direction:
+        let verify ='UPDATE Contacts SET verified =1 WHERE memberid_a = (SELECT memberid FROM Members WHERE username = $2) AND memberid_b = (SELECT memberid FROM Members WHERE username = $1)'
+        let remove ='DELETE FROM Contacts WHERE memberid_a=(SELECT memberid FROM Members WHERE username = $1) AND memberid_b = (SELECT memberid FROM Members WHERE username=$2)'
+        let add = "INSERT INTO Contacts (memberid_a, memberid_b, verified) VALUES ((SELECT memberid FROM Members WHERE username=$1), (SELECT memberid FROM Members WHERE username=$2), 1)"
+        db.none(verify, [clientUsername, otherUsername])
         .then(() => {
-            res.send({
-                success: true
-            })
+            db.none(remove, [clientUsername, otherUsername])
+            .then(() =>{
+                db.none(add, [clientUsername, otherUsername])
+                .then(()=> {
+                    res.send({
+                        success: true
+                    })
+                }).catch((err) => {
+                    res.send({
+                        success:  false,
+                        error: err
+                    })
+                });
+            }).catch((err) =>{
+                res.send({
+                    success: false,
+                    error: err
+                })
+            });
         }).catch((err) =>{
             res.send({
                 success: false,
@@ -58,7 +77,7 @@ router.post("/incoming", (req, res) => {
         });
     } else {
         //deny request = remove from database.
-        let query = 'DELETE FROM Contacts WHERE memberid_a = (SELECT memberid FROM Members WHERE username=$2) AND memberid_b = (SELECT memberid FROM Members WHERE username=$1)'
+        let query = 'DELETE FROM Contacts WHERE memberid_a = (SELECT memberid FROM Members WHERE username=$2) AND memberid_b = (SELECT memberid FROM Members WHERE username=$1) AND verified = 0'
         db.none(query, [clientUsername, otherUsername])
         .then((rws) => {
             res.send({
@@ -89,7 +108,8 @@ router.get("/outgoing", (req, res) => {
     db.manyOrNone(query,[clientUsername])
     .then((rows) => {
         res.send({
-            incomming: rows
+            success:true,
+            outgoing: rows
         })
     }).catch((err) => {
         res.send({
