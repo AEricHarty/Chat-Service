@@ -33,4 +33,29 @@ router.post("/searchContact", (req, res) => {
     });
 });
 
+router.post("/getContacts", (req, res) => {
+    let username = req.body['username'];
+    if(!username) {
+        res.send({
+            success: false,
+            error: 'Missing username.'
+        });
+    }
+    let search = 'SELECT M.memberId, M.FirstName, M.LastName, M.Username, M.Email FROM Members M INNER JOIN Contacts C ON M.MemberId = C.memberid_b WHERE C.memberid_a = (SELECT memberid FROM Members WHERE username=$1) AND C.Verified=1'
+
+    db.manyOrNone(search, [username])
+     .then((rows) => {
+        res.send({
+            success: true,
+            message: rows
+        });
+    }).catch((err) => {
+        res.send({
+            success: false,
+            message: 'Error when searching through database.',
+            error: err
+        });
+    });
+});
+
 module.exports = router;
