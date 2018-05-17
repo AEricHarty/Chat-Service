@@ -1,4 +1,3 @@
-//express is the framework we're going to use to handle requests
 const express = require('express');
 
 const bodyParser = require("body-parser");
@@ -20,9 +19,13 @@ router.post('/resetAttempt', (req, res) => {
     res.type("application/json");
     var email = req.body['email'];
 
-    //Confirm that it is in email address form
+    //Confirm that it is in email address form - should still fix this to only check for @
     var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
-    if(!pattern.test(email)) {
+    if(!pattern.test(email)){
+        email = false;
+    }
+
+    if(email) {
         //Using the 'one' method means that only one row should be returned
         db.one("SELECT * FROM Members WHERE  email=$1 AND Verification=1", [email])
         //If successful, run function passed into .then()
