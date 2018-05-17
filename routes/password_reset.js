@@ -61,7 +61,7 @@ router.post('/resetSubmit', (req, res) => {
     res.type("application/json");
     var password = req.body['password'];
     var email = req.body['email'];
-    var code = req.body['code'];
+    var code = req.body['username'];
     if(password && email && code) {
 
         let salt = crypto.randomBytes(32).toString("hex");
