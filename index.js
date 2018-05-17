@@ -36,6 +36,9 @@ app.use('/', request);
 var contacts = require('./routes/contacts.js');
 app.use('/',contacts);
 
+var password_reset = require('./routes/password_reset.js');
+app.use('/',password_reset);
+
 var pending_requests = require('./routes/pending_connection_request.js');
 app.use('/pending_request', pending_requests);
 
