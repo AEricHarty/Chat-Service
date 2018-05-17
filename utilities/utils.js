@@ -2,19 +2,33 @@
 let db = require('./sql_conn.js');
 
 //We use this create the SHA256 hash
+// OUR SendGrid log in Credential
+// Username: app95024574@heroku.com
+// Password: af9otsn58431
 const crypto = require("crypto");
 const FormData = require("form-data");
+let sendGridAPIKey = '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'
 function sendEmail(from, to, subject, message) {
-    let form = new FormData();
-    form.append("from", from);
-    form.append("to", to);
-    form.append("subject", subject);
-    form.append("body", message);
-    form.submit("http://cssgate.insttech.washington.edu/~cfb3/mail.php", (err,
-    res) => {
-        if(err) console.error(err);
-        console.log(res);
+    var helper = require('sendgrid').mail;
+    var from_email = new helper.Email(from);
+    var to_email = new helper.Email(to);
+    var subject = subject;
+    var content = new helper.Content('text/plain', message);
+    var mail = new helper.Mail(from_email, subject, to_email, content);
+    
+    var sg = require('sendgrid')(sendGridAPIKey);
+    var request = sg.emptyRequest({
+      method: 'POST',
+      path: '/v3/mail/send',
+      body: mail.toJSON(),
     });
+    
+    sg.API(request, function(error, response) {
+      console.log(response.statusCode);
+      console.log(response.body);
+      console.log(response.headers);
+    });
+
 }
 
 /**

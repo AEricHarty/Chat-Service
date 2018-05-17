@@ -75,7 +75,7 @@ router.post("/", (req, res) => {
                 success: true,
                 message: 'Please check your email for verification code'
             });
-            sendEmail("No-reply@chat", email, "Welcome!", "<strong> Welcome to our app!. Please confirm your account by entering your verification code: " + code + ". </strong>");
+            sendEmail("No-reply@chat", email, "Welcome!", "Welcome to our app!. Please confirm your account by entering your verification code: " + code + ".");
         }).catch((err) => {
             // Here we should check if the user is registered but not verified and
             // if so replace the old entry with the new one and send a new verification code
