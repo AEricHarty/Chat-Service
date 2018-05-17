@@ -3,12 +3,15 @@ const express = require('express');
 
 const bodyParser = require("body-parser");
 
+const crypto = require("crypto");
+
+let db = require('../utilities/utils').db;
+
+let getHash = require('../utilities/utils').getHash;
+
 let sendEmail = require('../utilities/utils').sendEmail;
 
 let generateVerificationCode = require('../utilities/utils').generateVerificationCode;
-
-//Create connection to Heroku Database
-let db = require('../utilities/utils').db;
 
 var router = express.Router();
 router.use(bodyParser.json());
