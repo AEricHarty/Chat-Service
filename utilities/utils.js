@@ -3,6 +3,7 @@ let db = require('./sql_conn.js');
 
 
 //We use this create the SHA256 hash
+
 const crypto = require("crypto");
 const FormData = require("form-data");
 let sendGridAPIKey = process.env.EMAIL_API_KEY;
