@@ -2,9 +2,7 @@
 let db = require('./sql_conn.js');
 
 //We use this create the SHA256 hash
-// OUR SendGrid log in Credential
-// Username: app95024574@heroku.com
-// Password: af9otsn58431
+
 const crypto = require("crypto");
 const FormData = require("form-data");
 let sendGridAPIKey = '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'
