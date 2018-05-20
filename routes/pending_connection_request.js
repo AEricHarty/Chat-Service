@@ -15,7 +15,7 @@ router.get("/incoming", (req, res) => {
     let clientUsername = req.query['username'];
     let after = req.query['after'];
 
-    let query =`SELECT Members.firstname, Members.lastname, Members.username, Members.email
+    let query =`SELECT Members.firstname, Members.lastname, Members.username, Members.email, Contacts.RequestTime
                 FROM Contacts INNER JOIN 
                 Members ON Members.memberid = Contacts.memberid_a
                 WHERE Contacts.verified = 0 AND 
@@ -101,7 +101,7 @@ router.get("/outgoing", (req, res) => {
     let clientUsername = req.query['username'];
     let after = req.query['after'];
 
-    let query =`SELECT Members.firstname, Members.lastname, Members.username, Members.email
+    let query =`SELECT Members.firstname, Members.lastname, Members.username, Members.email, Contacts.RequestTime
                 FROM Contacts INNER JOIN 
                 Members ON Members.memberid = Contacts.memberid_b
                 WHERE Contacts.verified = 0 AND 
