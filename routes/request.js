@@ -43,10 +43,10 @@ router.post("/sendRequest", (req, res) => {
     let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
                     VALUES ((SELECT memberid 
                     FROM members 
-                    WHERE username LIKE $1), 
+                    WHERE username = $1), 
                     (SELECT memberid 
                         FROM members 
-                        WHERE username LIKE $2),
+                        WHERE username = $2),
                     0);`
                    
     db.none(insert1, [username, connection])

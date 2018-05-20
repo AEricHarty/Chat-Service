@@ -33,6 +33,9 @@ app.use('/', msg);
 var request = require('./routes/request.js');
 app.use('/', request);
 
+var chat = require('./routes/chat.js');
+app.use('/', chat);
+
 var contacts = require('./routes/contacts.js');
 app.use('/',contacts);
 
