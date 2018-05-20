@@ -3,7 +3,7 @@ const pgp = require('pg-promise')();
 pgp.pg.defaults.ssl = true;
 
 //Create connection to Heroku Database
-const db = pgp(process.env.DATABASE_URL);
+db = pgp(process.env.DATABASE_URL);
 
 if(!db) {
    console.log("SHAME! Follow the intructions and set your DATABASE_URL correctly");
