@@ -29,7 +29,7 @@ router.get("/incoming", (req, res) => {
     .then((rows) => {
         res.send({
             success:true,
-            incoming: rows
+            pending: rows
         })
     }).catch((err) => {
         res.send({
@@ -115,7 +115,7 @@ router.get("/outgoing", (req, res) => {
     .then((rows) => {
         res.send({
             success:true,
-            outgoing: rows
+            pending: rows
         })
     }).catch((err) => {
         res.send({
