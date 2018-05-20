@@ -25,7 +25,7 @@ router.get("/incoming", (req, res) => {
                     WHERE Members.username = $1)
                     AND RequestTime AT TIME ZONE 'PDT' > $2
                     ORDER BY RequestTime ASC`
-    db.manyOrNone(query,[clientUsername, anfter])
+    db.manyOrNone(query,[clientUsername, after])
     .then((rows) => {
         res.send({
             success:true,

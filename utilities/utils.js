@@ -1,5 +1,5 @@
 //Get the connection to Heroku Database
-let db = require('./sql_conn.js');
+const db = require('./sql_conn.js');
 
 
 //We use this create the SHA256 hash
