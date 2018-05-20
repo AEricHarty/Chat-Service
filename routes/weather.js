@@ -23,7 +23,6 @@ router.post("/locategps", (req, res) => {
         } else {
             // pass on everything (try out each of these in Postman to see the difference)
             // res.send(response);
-
             // or just pass on the body
             res.send(body);
         }
