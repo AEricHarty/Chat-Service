@@ -13,6 +13,7 @@ router.use(bodyParser.json());
 router.get("/incoming", (req, res) => {
 
     let clientUsername = req.query['username'];
+    let after = req.query['after'];
 
     let query =`SELECT Members.firstname, Members.lastname, Members.username, Members.email
                 FROM Contacts INNER JOIN 
@@ -21,8 +22,10 @@ router.get("/incoming", (req, res) => {
                     Contacts.memberid_b = 
                     (SELECT Members.memberid 
                     FROM Members
-                    WHERE Members.username = $1)`
-    db.manyOrNone(query,[clientUsername])
+                    WHERE Members.username = $1)
+                    AND RequestTime AT TIME ZONE 'PDT' > $2
+                    ORDER BY RequestTime ASC`
+    db.manyOrNone(query,[clientUsername, after])
     .then((rows) => {
         res.send({
             success:true,
@@ -96,6 +99,7 @@ router.post("/incoming", (req, res) => {
 router.get("/outgoing", (req, res) => {
 
     let clientUsername = req.query['username'];
+    let after = req.query['after'];
 
     let query =`SELECT Members.firstname, Members.lastname, Members.username, Members.email
                 FROM Contacts INNER JOIN 
@@ -104,8 +108,10 @@ router.get("/outgoing", (req, res) => {
                     Contacts.memberid_a = 
                    (SELECT Members.memberid 
                     FROM Members
-                    WHERE Members.username = $1)`
-    db.manyOrNone(query,[clientUsername])
+                    WHERE Members.username = $1)
+                    AND RequestTime AT TIME ZONE 'PDT' > $2
+                    ORDER BY RequestTime ASC`
+    db.manyOrNone(query,[clientUsername, after])
     .then((rows) => {
         res.send({
             success:true,

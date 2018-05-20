@@ -45,6 +45,9 @@ app.use('/',password_reset);
 var pending_requests = require('./routes/pending_connection_request.js');
 app.use('/pending_request', pending_requests);
 
+var weather = require('./routes/weather.js');
+app.use('/weather', weather);
+
 /*
  * Return HTML for the / end point. 
  * This is a nice location to document your web service API
