@@ -10,7 +10,7 @@ var router = express.Router();
 router.post("/createChat", (req, res) => {
     var chatName = req.body['chatName'];
     var username = req.body['username'];
-    var contactList = req.body['contacts']; // should be array of usernames
+    var contactList = req.body['checkbox']; // should be array of usernames
     
     
     if(!chatName || !username || !contactList) {
@@ -18,7 +18,7 @@ router.post("/createChat", (req, res) => {
             success: false,
             error: "no chat name or Username passed in or no connections checked off to create multichat"
         });
-        return;
+        
     }
     let createChat =  `INSERT INTO Chats(name) 
                        VALUES($1)`
@@ -26,32 +26,33 @@ router.post("/createChat", (req, res) => {
     db.none(createChat, [chatName])
     .then(() => {
         res.send({
-            success: true
+            success: "success: chat created"
+            
         });
     }).catch((err) => {
         res.send({
-            success: false,
-            error: err,
+            success: "false: chat creation failed",
+            error: err
         });
     });
-
+    
     let addUser = `INSERT INTO Chatmembers(chatid, memberid) 
-                    VALUES (SELECT chatid 
+                    VALUES ((SELECT chatid 
                     FROM Chats 
-                    WHERE name = $1), 
+                    WHERE name = $1),
                     (SELECT memberid 
-                        FROM members 
-                        WHERE username = $2)`
+                    FROM members 
+                    WHERE username = $2))`
                    
-    db.none(addMembers, [chatName, userName])
+    db.none(addUser, [chatName, username])
     .then(() => {
         res.send({
-            success: true
+            success: "success, username added to chat"
         });
     }).catch((err) => {
         res.send({
-            success: false,
-            error: err,
+            success: "false: username not added to chat",
+            error: err
         });
     });
 
@@ -60,47 +61,29 @@ router.post("/createChat", (req, res) => {
         var contact = contactList[i];
 
         let addToChat = `INSERT INTO Chatmembers(chatid, memberid) 
-                    VALUES (SELECT chatid 
+                    VALUES ((SELECT chatid 
                     FROM Chats 
                     WHERE name = $1), 
                     (SELECT memberid 
                         FROM members 
-                        WHERE username = $2)`
+                        WHERE username = $2))`
                    
         db.none(addToChat, [chatName, contactList[i]])
+        /*
         .then(() => {
             res.send({
-                success: true
+                success: "success added contacts to chat"
             });
-        }).catch((err) => {
+            */
+        .catch((err) => {
             res.send({
-                success: false,
-                error: err,
+                success: "false: contacts not added to chat",
+                error: err
             });
         });
 
     }
     
 });
-
-router.get("/leaveChat", (req, res) => {
-    let leaveName = req.query['username'];
-    
-    let query = `DELETE FROM chatmembers WHERE memberid = 
-                (SELECT memberid FROM members WHERE username = $1)`
-    db.manyOrNone(query, [leaveName])
-
-    .then((rows) => {
-        res.send({
-            messages: rows
-        })
-    }).catch((err) => {
-        res.send({
-            success: false,
-            error: err
-        })
-    });
-});
-
 
 module.exports = router;
