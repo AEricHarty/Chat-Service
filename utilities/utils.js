@@ -1,33 +1,24 @@
 //Get the connection to Heroku Database
 const db = require('./sql_conn.js');
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-// Module to run scheduled tasks
-var schedule = require('node-schedule');
->>>>>>> fbb8c46023f70e1b5754fc5aab8f596e34860ba4
 //express is the framework we're going to use to handle requests
 const express = require('express');
 
 const bodyParser = require("body-parser");
 
+//Module to run scheduled tasks
+var schedule = require('node-schedule');
+
+//We use this create the SHA256 hash
+const crypto = require("crypto");
+
+const FormData = require("form-data");
+
+let sendGridAPIKey = process.env.EMAIL_API_KEY;
+
 var router = express.Router();
 router.use(bodyParser.json());
 
-<<<<<<< HEAD
-=======
-// Module to run scheduled tasks
-var schedule = require('node-schedule');
->>>>>>> 07b459412a99e14fff074cf3bb1af1453a639eb2
-=======
->>>>>>> fbb8c46023f70e1b5754fc5aab8f596e34860ba4
-
-//We use this create the SHA256 hash
-
-const crypto = require("crypto");
-const FormData = require("form-data");
-let sendGridAPIKey = process.env.EMAIL_API_KEY;
 function sendEmail(from, to, subject, message) {
     var helper = require('sendgrid').mail;
     var from_email = new helper.Email(from);
