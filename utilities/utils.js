@@ -1,8 +1,17 @@
 //Get the connection to Heroku Database
 const db = require('./sql_conn.js');
 
+
 // Module to run scheduled tasks
 var schedule = require('node-schedule');
+//express is the framework we're going to use to handle requests
+const express = require('express');
+
+const bodyParser = require("body-parser");
+
+var router = express.Router();
+router.use(bodyParser.json());
+
 
 //We use this create the SHA256 hash
 
@@ -30,8 +39,7 @@ function sendEmail(from, to, subject, message) {
       console.log(response.headers);
     });
 }
-
-// Clean up unverified accounts that are more than 1 day old.
+ 
 var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * * *', function(){
     console.log('Cleaning up unverified accounts.');
     let command = "DELETE FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day'";
@@ -52,6 +60,18 @@ var testingScheduler = schedule.scheduleJob('0 * * * * *', function(){
         console.log(err);
     });
 });
+
+// Clean up unverified accounts that are more than 1 day old.
+var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * * *', function(){
+    console.log('Cleaning up unverified accounts.');
+    let command = "DELETE FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day'";
+    db.manyOrNone(command)
+    .catch((err) => {
+        console.log(err);
+    });
+});
+
+}
 
 /**
 * Method to get a salted hash.
