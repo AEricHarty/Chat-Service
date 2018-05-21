@@ -3,6 +3,7 @@ var schedule = require('node-schedule');
 //Get the connection to Heroku Database
 const db = require('./sql_conn.js');
 
+<<<<<<< HEAD
 //express is the framework we're going to use to handle requests
 const express = require('express');
 
@@ -11,6 +12,10 @@ const bodyParser = require("body-parser");
 var router = express.Router();
 router.use(bodyParser.json());
 
+=======
+// Module to run scheduled tasks
+var schedule = require('node-schedule');
+>>>>>>> 07b459412a99e14fff074cf3bb1af1453a639eb2
 
 //We use this create the SHA256 hash
 
@@ -37,9 +42,30 @@ function sendEmail(from, to, subject, message) {
       console.log(response.body);
       console.log(response.headers);
     });
-
 }
  
+var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * * *', function(){
+    console.log('Cleaning up unverified accounts.');
+    let command = "DELETE FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day'";
+    db.manyOrNone(command)
+    .catch((err) => {
+        console.log(err);
+    });
+});
+
+// For testing purposes, print unverified accounts every 1 min.
+var testingScheduler = schedule.scheduleJob('0 * * * * *', function(){
+    console.log('SELECTING unverified accounts every minute.');
+    let command = "SELECT * FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day'";
+    db.manyOrNone(command)
+    .then((rows) => {
+        console.log(rows);
+    }).catch((err) => {
+        console.log(err);
+    });
+});
+
+// Clean up unverified accounts that are more than 1 day old.
 var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * * *', function(){
     console.log('Cleaning up unverified accounts.');
     let command = "DELETE FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day'";
