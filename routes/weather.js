@@ -13,8 +13,8 @@ const API_KEY = process.env.ACCUWEATHER_KEY;
 
 router.post("/locategps", (req, res) => {
     res.type("application/json");
-    var lat = req.body['lat'];
-    var lon = req.body['lon'];
+    var lat = req.body['username'];
+    var lon = req.body['email'];
     var url = `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${lat}%2C${lon}&language=en-us&details=false&toplevel=false`;
     
     request(url, function (error, response, body) {
@@ -31,7 +31,7 @@ router.post("/locategps", (req, res) => {
 
 router.post("/locatezip", (req, res) => {
     res.type("application/json");
-    var zip = req.body['zip'];
+    var zip = req.body['username'];
     var url = `http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=${API_KEY}&q=${zip}&language=en-us&details=false`;
     
     request(url, function (error, response, body) {
@@ -45,7 +45,7 @@ router.post("/locatezip", (req, res) => {
 
 router.post("/current", (req, res) => {
     res.type("application/json");
-    var location = req.body['location'];
+    var location = req.body['username'];
     var url = `http://dataservice.accuweather.com/currentconditions/v1/${location}?apikey=${API_KEY}&language=en-us&details=false`;
     
     request(url, function (error, response, body) {
@@ -59,7 +59,7 @@ router.post("/current", (req, res) => {
 
 router.post("/fiveday", (req, res) => {
     res.type("application/json");
-    var location = req.body['location'];
+    var location = req.body['username'];
     var url = `http://dataservice.accuweather.com/forecasts/v1/daily/5day${location}?apikey=${API_KEY}&language=en-us&details=false&metric=false`;
 
     request(url, function (error, response, body) {
@@ -73,7 +73,7 @@ router.post("/fiveday", (req, res) => {
 
 router.post("/nextday", (req, res) => {
     res.type("application/json");
-    var location = req.body['location'];
+    var location = req.body['username'];
     var url = `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${API_KEY}&language=en-us&details=false&metric=false`;
     
     request(url, function (error, response, body) {
