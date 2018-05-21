@@ -14,10 +14,15 @@ router.use(bodyParser.json());
 
 
 //We use this create the SHA256 hash
-
 const crypto = require("crypto");
+
 const FormData = require("form-data");
+
 let sendGridAPIKey = process.env.EMAIL_API_KEY;
+
+var router = express.Router();
+router.use(bodyParser.json());
+
 function sendEmail(from, to, subject, message) {
     var helper = require('sendgrid').mail;
     var from_email = new helper.Email(from);
