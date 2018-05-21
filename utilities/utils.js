@@ -71,7 +71,6 @@ var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * * *', function(
     });
 });
 
-}
 
 /**
 * Method to get a salted hash.
