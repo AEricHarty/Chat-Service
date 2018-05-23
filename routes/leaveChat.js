@@ -39,4 +39,32 @@ router.post("/leaveChat", (req, res) => {
 
 });
 
+
+router.post("/getMyChats", (req, res) => {
+    var username = req.body['username'];
+     
+    if(!username) {
+        res.send({
+            success: false,
+            error: "incorrect information"
+        });
+        return;
+    }
+    let list =  `DELETE FROM chatmembers WHERE (memberid =
+                (SELECT memberid FROM members WHERE username = $2)) AND
+                (chatid = (SELECT chatid FROM chats WHERE name = $1))`
+
+    db.manyOrNone(list, username)
+    .then((rows) => {
+        res.send({
+            chatid: name
+        })
+    }).catch((err) => {
+        res.send({
+            success: false,
+            error: err
+        })
+    });
+});
+
 module.exports = router;
