@@ -11,7 +11,9 @@ router.post("/createChat", (req, res) => {
     var chatName = req.body['chatName'];
     var username = req.body['username'];
     var contactList = req.body['checkbox']; // should be array of usernames
-    
+
+    console.log("List is " + contactList[0] + " " + contactList[1]);
+
     
     if(!chatName || !username || !contactList) {
         res.send({
@@ -21,68 +23,57 @@ router.post("/createChat", (req, res) => {
         
     }
     let createChat =  `INSERT INTO Chats(name) 
-                       VALUES($1)`
+                       VALUES($1) RETURNING *`
 
-    db.none(createChat, [chatName])
-    .then(() => {
-        res.send({
-            success: "success: chat created"
-            
-        });
-    }).catch((err) => {
-        res.send({
-            success: "false: chat creation failed",
-            error: err
-        });
-    });
-    
-    let addUser = `INSERT INTO Chatmembers(chatid, memberid) 
-                    VALUES ((SELECT chatid 
-                    FROM Chats 
-                    WHERE name = $1),
+    db.one(createChat, [chatName])
+    .then((rows) => {
+        var chatId = rows.chatid;
+        console.log("Chat id is :" + chatId);
+        console.log(contactList.length);
+        let addUser = `INSERT INTO Chatmembers(chatid, memberid) 
+                    VALUES ($1,
                     (SELECT memberid 
                     FROM members 
                     WHERE username = $2))`
                    
-    db.none(addUser, [chatName, username])
-    .then(() => {
-        res.send({
-            success: "success, username added to chat"
-        });
-    }).catch((err) => {
-        res.send({
-            success: "false: username not added to chat",
-            error: err
-        });
-    });
-
-    var i;
-    for (i = 0; i < contactList.length; i++) {
-        var contact = contactList[i];
-
-        let addToChat = `INSERT INTO Chatmembers(chatid, memberid) 
-                    VALUES ((SELECT chatid 
-                    FROM Chats 
-                    WHERE name = $1), 
-                    (SELECT memberid 
-                        FROM members 
-                        WHERE username = $2))`
-                   
-        db.none(addToChat, [chatName, contactList[i]])
-        /*
+        db.none(addUser, [chatId, username])
         .then(() => {
+            if (contactList.length > 0) {
+                let addMoreUsers = "INSERT INTO Chatmembers(chatid, memberid) VALUES ($1, (SELECT memberid FROM members WHERE username=\'" + contactList[0]+ "\'))";
+                for (i = 1; i< contactList.length; i++) {
+                    addMoreUsers+= ", ($1, (SELECT memberid FROM members WHERE username=\'" + contactList[i]+ "\'))";
+                }
+                console.log(addMoreUsers);
+                db.none(addMoreUsers, [chatId])
+                .then(() => {
+                    res.send({
+                        success: true,
+                        message: "Successfully added all users to the new chat."
+                    });
+                }).catch((err) => {
+                    res.send({
+                        success: false,
+                        message: "One or more of the users added to chat returned an error. Make sure username inputs are correct.",
+                        error: err
+                    });
+                });
+            }
+
+        }).catch((err) => {
             res.send({
-                success: "success added contacts to chat"
-            });
-            */
-        .catch((err) => {
-            res.send({
-                success: "false: contacts not added to chat",
+                success: false,
+                message: "" + username +" not added to chat.",
                 error: err
             });
         });
-
-    }
+    }).catch((err) => {
+        res.send({
+            success: false,
+            message: "Chat creation failed",
+            error: err
+        });
+    });
+    
     
 });
 

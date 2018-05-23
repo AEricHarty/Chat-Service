@@ -58,7 +58,7 @@ function sendEmail(from, to, subject, message) {
 // });
 
 // Clean up unverified accounts that are more than 1 day old.
-var cleanUnverifiedAccounts = schedule.scheduleJob('0 * * *', function(){
+var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * *', function(){
     console.log('Cleaning up unverified accounts.');
     let command = "DELETE FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day\'";
     db.manyOrNone(command)
