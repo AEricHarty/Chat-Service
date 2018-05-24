@@ -18,27 +18,7 @@ router.post("/sendRequest", (req, res) => {
         });
         return;
     }
-    /*
-    let insert = `INSERT INTO Messages(ChatId, Message, MemberId)
-                  SELECT $1, $2, MemberId FROM Members
-                  WHERE Username=$3`
-    db.none(insert, [chatId, message, username]) */              
-                  
-    /*
-    let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
-                   VALUES(2, 32, 0)`
-    */     
-
-    /*
-    let insert1 = `INSERT INTO contacts (memberid_a, memberid_b, verified) 
-                   VALUES ((SELECT memberid 
-                            FROM members 
-                            WHERE username LIKE $1), 
-                           (SELECT memberid 
-                            FROM members 
-                            WHERE username LIKE $2),
-                            0)`
-                  */          
+          
 
     let insert1 = `INSERT INTO contacts(memberid_a, memberid_b, verified) 
                     VALUES ((SELECT memberid 
