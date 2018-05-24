@@ -13,10 +13,10 @@ router.post("/leaveChat", (req, res) => {
     var username = req.body['username'];
     
     
-    if(!chatName || !username) {
+    if(!chatId || !username) {
         res.send({
             success: false,
-            error: "no chat name or Username passed in to leaveChat"
+            error: "no chat Id or Username passed in to leaveChat"
         });
         return;
     }
@@ -27,12 +27,12 @@ router.post("/leaveChat", (req, res) => {
     db.none(leave, [chatId, username])
     .then(() => {
         res.send({
-            success: "success:  left chat",
+            success: true,
             
         });
     }).catch((err) => {
         res.send({
-            success: "false: unable to leave chat",
+            success: false,
             error: err,
         });
     });
