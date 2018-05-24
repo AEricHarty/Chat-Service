@@ -38,6 +38,7 @@ router.post("/createChat", (req, res) => {
                    
         db.none(addUser, [chatName, username])
         .then(() => {
+<<<<<<< HEAD
             console.log("Added user " + username + " successfuly");
             var i;
             for (i = 0; i < contactList.length; i++) {
@@ -53,6 +54,22 @@ router.post("/createChat", (req, res) => {
                        
                 db.none(addToChat, [chatName, contactList[i]])
                 .catch((err) => {
+=======
+            if (contactList.length > 0) {
+                let addMoreUsers = "INSERT INTO Chatmembers(chatid, memberid) VALUES ($1, (SELECT memberid FROM members WHERE username=\'" + contactList[0]+ "\'))";
+                for (i = 1; i< contactList.length; i++) {
+                    addMoreUsers+= ", ($1, (SELECT memberid FROM members WHERE username=\'" + contactList[i]+ "\'))";
+                }
+                console.log(addMoreUsers);
+                db.none(addMoreUsers, [chatId])
+                .then(() => {
+                    res.send({
+                        success: true,
+                        message: "Successfully added all users to the new chat.",
+                        chatId: chatId
+                    });
+                }).catch((err) => {
+>>>>>>> 23ef3a645035d5900bd97748c0e68e37f00457df
                     res.send({
                         success: false,
                         message: "" + contactList[i] + " not added to chat",

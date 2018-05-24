@@ -9,7 +9,7 @@ var router = express.Router();
 
 router.post("/leaveChat", (req, res) => {
     
-    var chatName = req.body['chatName'];
+    var chatId = req.body['chatId'];
     var username = req.body['username'];
     
     
@@ -22,9 +22,9 @@ router.post("/leaveChat", (req, res) => {
     }
     let leave =  `DELETE FROM chatmembers WHERE (memberid =
                 (SELECT memberid FROM members WHERE username = $2)) AND
-                (chatid = (SELECT chatid FROM chats WHERE name = $1))`
+                (chatid = $1)`
 
-    db.none(leave, [chatName, username])
+    db.none(leave, [chatId, username])
     .then(() => {
         res.send({
             success: "success:  left chat",
