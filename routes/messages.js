@@ -62,7 +62,7 @@ router.get("/getMessages", (req, res) => {
 
 router.get("/getallmessages", (req, res) => {
     let username = req.query['username'];
-    let after = req.query['after'];
+    let timestamp = req.query['after'];
     
     let query = 'SELECT M.chatid, C.name, M.message, M.memberid, M.timestamp FROM Messages M INNER JOIN Chats C ON C.chatid = M.chatid WHERE M.timestamp > $2 AND M.memberid = (SELECT memberid FROM Members WHERE username=$1)'
 
