@@ -48,7 +48,8 @@ router.post("/createChat", (req, res) => {
                 .then(() => {
                     res.send({
                         success: true,
-                        message: "Successfully added all users to the new chat."
+                        message: "Successfully added all users to the new chat.",
+                        chatId: chatId
                     });
                 }).catch((err) => {
                     res.send({
