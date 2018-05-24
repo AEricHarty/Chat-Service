@@ -15,18 +15,6 @@ app.use('/register', reg);
 var resend = require('./routes/resend.js');
 app.use('/resend', resend);
 
-var hello = require('./routes/hello.js');
-app.use('/hello', hello);
-
-var params = require('./routes/params.js');
-app.use('/params', params);
-
-var wait = require('./routes/wait.js');
-app.use('/wait', wait);
-
-var demosql = require('./routes/demosql.js');
-app.use('/demosql', demosql);
-
 var msg = require('./routes/messages.js');
 app.use('/', msg);
 

@@ -2,11 +2,27 @@
 const db = require('./sql_conn.js');
 
 
-//We use this create the SHA256 hash
+// Module to run scheduled tasks
+var schedule = require('node-schedule');
+//express is the framework we're going to use to handle requests
+const express = require('express');
 
+const bodyParser = require("body-parser");
+
+var router = express.Router();
+router.use(bodyParser.json());
+
+
+//We use this create the SHA256 hash
 const crypto = require("crypto");
+
 const FormData = require("form-data");
+
 let sendGridAPIKey = process.env.EMAIL_API_KEY;
+
+var router = express.Router();
+router.use(bodyParser.json());
+
 function sendEmail(from, to, subject, message) {
     var helper = require('sendgrid').mail;
     var from_email = new helper.Email(from);
@@ -27,8 +43,30 @@ function sendEmail(from, to, subject, message) {
       console.log(response.body);
       console.log(response.headers);
     });
-
 }
+
+// For testing purposes, print unverified accounts every 1 min.
+// var testingScheduler = schedule.scheduleJob('0 * * * * *', function(){
+//     console.log('SELECTING unverified accounts every minute.');
+//     let command = "SELECT * FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day'";
+//     db.manyOrNone(command)
+//     .then((rows) => {
+//         console.log(rows);
+//     }).catch((err) => {
+//         console.log(err);
+//     });
+// });
+
+// Clean up unverified accounts that are more than 1 day old.
+var cleanUnverifiedAccounts = schedule.scheduleJob('59 59 23 * * *', function(){
+    console.log('Cleaning up unverified accounts.');
+    let command = "DELETE FROM Members WHERE Verification=0 AND timecreated < NOW() - INTERVAL \'1 day\'";
+    db.manyOrNone(command)
+    .catch((err) => {
+        console.log(err);
+    });
+});
+
 
 /**
 * Method to get a salted hash.

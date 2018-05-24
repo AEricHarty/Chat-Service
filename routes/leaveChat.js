@@ -39,4 +39,32 @@ router.post("/leaveChat", (req, res) => {
 
 });
 
+
+router.post("/getMyChats", (req, res) => {
+    var username = req.body['username'];
+     
+    if(!username) {
+        res.send({
+            success: false,
+            error: "incorrect information"
+        });
+        return;
+    }
+    //Need a query that gets every chatid associated with the username from chatmembers
+    // and joins with the chats table to return every row with a chat the user is in
+    let list =  `SELECT Chats.chatid, Chats.name FROM Chats INNER JOIN ChatMembers ON Chats.chatid=ChatMembers.chatId WHERE memberid=(SELECT memberid FROM Members WHERE username=$1)`
+
+    db.manyOrNone(list, username)
+    .then((rows) => {
+        res.send({
+            rows
+        })
+    }).catch((err) => {
+        res.send({
+            success: false,
+            error: err
+        })
+    });
+});
+
 module.exports = router;

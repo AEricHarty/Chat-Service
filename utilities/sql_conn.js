@@ -7,7 +7,6 @@ const db = pgp('postgres://qbchbxubahnjag:ce59d95bf5bf0ae342127c203de81797f0d225
 //const db = pgp(process.env.DATABASE_URL);
 
 if(!db) {
-   console.log("SHAME! Follow the intructions and set your DATABASE_URL correctly");
    process.exit(1);
 }
 

@@ -8,7 +8,7 @@ var router = express.Router();
 router.post("/searchContact", (req, res) => {
     let term = req.body['term'].toLowerCase();
     let username = req.body['username'];
-    if(!term) {
+    if(!term || term.length == 0) {
         res.send({
             success: false,
             error: "Missing searching term."
