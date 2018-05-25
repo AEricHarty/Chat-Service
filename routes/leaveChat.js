@@ -40,8 +40,8 @@ router.post("/leaveChat", (req, res) => {
 });
 
 
-router.post("/getMyChats", (req, res) => {
-    var username = req.body['username'];
+router.get("/getMyChats", (req, res) => {
+    var username = req.query['username'];
      
     if(!username) {
         res.send({
