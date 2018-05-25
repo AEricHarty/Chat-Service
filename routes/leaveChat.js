@@ -65,4 +65,29 @@ router.post("/getMyChats", (req, res) => {
     });
 });
 
+router.get("/getMyChatsTwo", (req, res) => {
+    var username = req.query['username'];
+     
+    if(!username) {
+        res.send({
+            success: false,
+            error: "incorrect information"
+        });
+        return;
+    }
+    let list =  `SELECT Chats.chatid, Chats.name FROM Chats INNER JOIN ChatMembers ON Chats.chatid=ChatMembers.chatId WHERE memberid=(SELECT memberid FROM Members WHERE username=$1)`
+
+    db.manyOrNone(list, username)
+    .then((chats) => {
+        res.send({
+            chats
+        })
+    }).catch((err) => {
+        res.send({
+            success: false,
+            error: err
+        })
+    });
+});
+
 module.exports = router;
