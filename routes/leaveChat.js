@@ -34,14 +34,14 @@ router.post("/leaveChat", (req, res) => {
         res.send({
             success: false,
             error: err,
-        });
+        })
     });
 
 });
 
 
-router.get("/getMyChats", (req, res) => {
-    var username = req.query['username'];
+router.post("/getMyChats", (req, res) => {
+    var username = req.body['username'];
      
     if(!username) {
         res.send({
