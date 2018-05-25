@@ -71,9 +71,7 @@ router.post("/invite", (req, res) => {
 
         db.one('SELECT FROM Members WHERE username=$1', [username])
         .then((row) => {
-            let message = "Hi " + friendName + ", our user " + username + " has invited you to try out our app. Visit this link https//450Chat.com to download our app today!.";
-            console.log(message);
-            sendEmail("No-reply@chat", friendEmail, message);
+            sendEmail("No-reply@chat", friendEmail, "Hi " + friendName + ", our user " + username + " has invited you to try out our app. Visit this link https//450Chat.com to download our app today!.");
             res.send({
                 success: true,
                 message: "Sent!",
