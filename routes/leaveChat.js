@@ -42,7 +42,7 @@ router.post("/leaveChat", (req, res) => {
 router.post("/getTime", (req, res) => {
     var date = new Date();
 
-    var hour = date.getHours();
+    var hour = date.getHours()-7;
     hour = (hour < 10 ? "0" : "") + hour;
 
     var min  = date.getMinutes();
