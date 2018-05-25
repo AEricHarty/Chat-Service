@@ -42,7 +42,7 @@ router.post("/leaveChat", (req, res) => {
 router.post("/getTime", (req, res) => {
     var date = new Date();
 
-    var hour = date.getHours()-7;
+    var hour = date.getHours()+17;
     hour = (hour < 10 ? "0" : "") + hour;
 
     var min  = date.getMinutes();
@@ -59,7 +59,7 @@ router.post("/getTime", (req, res) => {
     var day  = date.getDate();
     day = (day < 10 ? "0" : "") + day;
 
-    var timestamp = year + ":" + month + ":" + day + " " + hour + ":" + min + ":" + sec;
+    var timestamp = year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec + ".00000";
     res.send({
         time : timestamp
     });
