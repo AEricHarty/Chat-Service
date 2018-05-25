@@ -66,9 +66,9 @@ router.get("/getallmessages", (req, res) => {
 
     let query = `SELECT M.chatid, C.name, M.message, M.memberid, M.timestamp
                 FROM Messages M INNER JOIN 
-                Chats C ON C.chatid = M.chatid 
+                ChatMembers C ON C.chatid = M.chatid 
                 WHERE M.timestamp AT TIME ZONE 'PDT' > $2 
-                AND M.memberid = (SELECT memberid FROM Members WHERE username=$1)`
+                AND C.memberid = (SELECT memberid FROM Members WHERE username=$1)`
     db.manyOrNone(query, [username, timestamp])
     .then((rows) => {
         res.send({
