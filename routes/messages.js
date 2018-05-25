@@ -64,7 +64,7 @@ router.get("/getallmessages", (req, res) => {
     let username = req.query['username'];
     let timestamp = req.query['after'];
 
-    let query = `SELECT M.chatid, C.name, M.message, M.memberid, M.timestamp
+    let query = `SELECT M.chatid, M.message, M.memberid, M.timestamp
                 FROM Messages M INNER JOIN 
                 ChatMembers C ON C.chatid = M.chatid 
                 WHERE M.timestamp AT TIME ZONE 'PDT' > $2 
