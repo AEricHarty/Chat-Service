@@ -43,6 +43,7 @@ router.post("/getTime", (req, res) => {
     var date = new Date();
 
     var hour = date.getHours()+17;
+    hour = (hour > 23 ? hour-24 : hour);
     hour = (hour < 10 ? "0" : "") + hour;
 
     var min  = date.getMinutes();
