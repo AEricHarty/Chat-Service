@@ -22,7 +22,8 @@ router.post("/currentgps", (req, res) => {
         if (error) {
             res.send(error);
         } else {
-            res.send(body);
+            //res.send(body);
+            res.send(response);
         }
     });
 });
