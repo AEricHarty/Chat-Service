@@ -42,33 +42,5 @@ router.post("/forecast", (req, res) => {
     });
 });
 
-router.post("/forecastzip", (req, res) => {
-    res.type("application/json");
-    var zip = req.body['username'];
-    var url = `api.openweathermap.org/data/2.5/forecast?zip=${zip},us&APPID=${API_KEY}`;
-    
-    request(url, function (error, response, body) {
-        if (error) {
-            res.send(error);
-        } else {
-            res.send(body);
-        }
-    });
-});
-
-router.post("/forecastgps", (req, res) => {
-    res.type("application/json");
-    var lat = req.body['username'];
-    var lon = req.body['email'];
-    var url = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=${API_KEY}`;
-    
-    request(url, function (error, response, body) {
-        if (error) {
-            res.send(error);
-        } else {
-            res.send(body);
-        }
-    });
-});
 
 module.exports = router;
