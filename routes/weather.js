@@ -27,10 +27,11 @@ router.post("/current", (req, res) => {
     });
 });
 
-router.post("/currentzip", (req, res) => {
+router.post("/forecast", (req, res) => {
     res.type("application/json");
     var zip = req.body['username'];
-    var url = `api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${API_KEY}`;
+    var days = req.body['email'];
+    var url = `http://api.apixu.com/v1/forecast.json?key=${API_KEY}&q=${loc}&${days}`;
     
     request(url, function (error, response, body) {
         if (error) {
