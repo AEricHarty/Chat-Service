@@ -22,8 +22,8 @@ router.post("/currentgps", (req, res) => {
         if (error) {
             res.send(error);
         } else {
-            //res.send(body);
-            res.send(response);
+            res.send(body);
+            //res.send(response);
         }
     });
 });
@@ -33,17 +33,13 @@ router.post("/currentzip", (req, res) => {
     var zip = req.body['username'];
     var url = `api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${API_KEY}`;
     
-    res.send({
-        success: false,
-        error: err
-    })
-    // request(url, function (error, response, body) {
-    //     if (error) {
-    //         res.send(error);
-    //     } else {
-    //         res.send(body);
-    //     }
-    // });
+    request(url, function (error, response, body) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(body);
+        }
+    });
 });
 
 router.post("/forecastzip", (req, res) => {
