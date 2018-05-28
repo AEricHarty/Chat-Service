@@ -78,7 +78,7 @@ router.post('/resetSubmit', (req, res) => {
         db.one('SELECT * FROM Members WHERE email=$2 AND VerificationCode=$3', params)
         //If successful, run function passed into .then()
         .then(() => {
-            db.none('UPDATE Members SET Password=$1 AND Salt=$4 WHERE email=$2 AND VerificationCode=$3', params)
+            db.none('UPDATE Members SET Password=$1, Salt=$4 WHERE email=$2 AND VerificationCode=$3', params)
             .then(() => {
                 res.send({
                     success: true,
