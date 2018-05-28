@@ -75,10 +75,10 @@ router.post('/resetSubmit', (req, res) => {
 
         let params = [salted_hash, email, code, salt];
         //Using the 'one' method means that only one row should be returned
-        db.one('SELECT VerificationCode FROM Members WHERE email=$2 AND VerificationCode=$3', params)
+        db.one('SELECT * FROM Members WHERE email=$2 AND VerificationCode=$3', params)
         //If successful, run function passed into .then()
         .then(() => {
-            db.none('UPDATE Members SET Password=1 AND Salt=4 WHERE email=$2 AND VerificationCode=$3', params)
+            db.none('UPDATE Members SET Password=$1 AND Salt=$4 WHERE email=$2 AND VerificationCode=$3', params)
             .then(() => {
                 res.send({
                     success: true,
