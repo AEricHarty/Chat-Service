@@ -18,6 +18,9 @@ router.post("/currentgps", (req, res) => {
     var lon = req.body['email'];
     var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}`;
     
+    res.send({
+        success: API_KEY
+    });
     request(url, function (error, response, body) {
         if (error) {
             res.send(error);
