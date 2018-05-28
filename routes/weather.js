@@ -29,7 +29,7 @@ router.post("/current", (req, res) => {
 
 router.post("/forecast", (req, res) => {
     res.type("application/json");
-    var zip = req.body['username'];
+    var loc = req.body['username'];
     var days = req.body['email'];
     var url = `http://api.apixu.com/v1/forecast.json?key=${API_KEY}&q=${loc}&${days}`;
     
