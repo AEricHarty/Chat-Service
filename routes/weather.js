@@ -9,18 +9,14 @@ const bodyParser = require("body-parser");
 var router = express.Router();
 router.use(bodyParser.json());
 
-const API_KEY = process.env.OPENWEATHERMAP_KEY;
+const API_KEY = process.env.APIXU_KEY;
 
 
-router.post("/currentgps", (req, res) => {
+router.post("/current", (req, res) => {
     res.type("application/json");
-    var lat = req.body['username'];
-    var lon = req.body['email'];
-    var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}`;
+    var loc = req.body['username'];
+    var url = `http://api.apixu.com/v1/current.json?key=${API_KEY}&q=${loc}`;
     
-    res.send({
-        success: url
-    });
     request(url, function (error, response, body) {
         if (error) {
             res.send(error);
