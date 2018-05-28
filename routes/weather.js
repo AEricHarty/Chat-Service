@@ -18,20 +18,14 @@ router.post("/currentgps", (req, res) => {
     var lon = req.body['email'];
     var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}`;
     
-
-    if(lon == null){
-        res.send({
-            faliure: false
-        });
-    }
-    // request(url, function (error, response, body) {
-    //     if (error) {
-    //         res.send(error);
-    //     } else {
-    //         res.send(body);
-    //         //res.send(response);
-    //     }
-    // });
+    request(url, function (error, response, body) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(body);
+            //res.send(response);
+        }
+    });
 });
 
 router.post("/currentzip", (req, res) => {
