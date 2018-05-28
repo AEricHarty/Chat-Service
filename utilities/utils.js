@@ -79,7 +79,11 @@ function getHash(pw, salt) {
 }
 
 function generateVerificationCode() {
-    return Math.ceil(Math.random()*10000);
+    var code = 0;
+    while(code < 999 || code > 9999){
+        code = Math.ceil(Math.random()*10000);
+    }
+    return code;
 }
 
 module.exports = {
