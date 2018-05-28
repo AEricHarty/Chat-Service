@@ -18,15 +18,14 @@ router.post("/currentgps", (req, res) => {
     var lon = req.body['email'];
     var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}`;
     
-    res.send("fail");
-    // request(url, function (error, response, body) {
-    //     if (error) {
-    //         res.send(error);
-    //     } else {
-    //         //res.send(body);
-    //         res.send(response);
-    //     }
-    // });
+    request(url, function (error, response, body) {
+        if (error) {
+            res.send(error);
+        } else {
+            //res.send(body);
+            res.send(response);
+        }
+    });
 });
 
 router.post("/currentzip", (req, res) => {
@@ -34,13 +33,17 @@ router.post("/currentzip", (req, res) => {
     var zip = req.body['username'];
     var url = `api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=${API_KEY}`;
     
-    request(url, function (error, response, body) {
-        if (error) {
-            res.send(error);
-        } else {
-            res.send(body);
-        }
-    });
+    res.send({
+        success: false,
+        error: err
+    })
+    // request(url, function (error, response, body) {
+    //     if (error) {
+    //         res.send(error);
+    //     } else {
+    //         res.send(body);
+    //     }
+    // });
 });
 
 router.post("/forecastzip", (req, res) => {
