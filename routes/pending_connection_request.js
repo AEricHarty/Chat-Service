@@ -46,7 +46,22 @@ router.post("/incoming", (req, res) => {
     let otherUsername = req.body['otherUsername'];
     let decision = req.body['answer'];
 
-    if(decision) {
+    let passCheck = false;
+    let reCheck = 'SELECT * FROM Contacts WHERE (memberid_a=(SELECT memberid FROM Members WHERE username = $2) AND memberid_b = (SELECT memberid FROM Members WHERE username=$1)'
+    db.one(reCheck, [clientUsername, otherUsername])
+    .then((row) => {
+        passCheck = true;
+        console.log("Changed passCheck to true.");
+    }).catch((err) => {
+        res.send({
+            success: false,
+            pending: false,
+            message: "This pending connection is no longer available."
+        });
+    });
+
+
+    if(decision && passCheck) {
         // Verify request, then delete any requests in opposite direction, then add verified conection in opposite direction:
         let verify ='UPDATE Contacts SET verified =1 WHERE memberid_a = (SELECT memberid FROM Members WHERE username = $2) AND memberid_b = (SELECT memberid FROM Members WHERE username = $1)'
         let remove ='DELETE FROM Contacts WHERE memberid_a=(SELECT memberid FROM Members WHERE username = $1) AND memberid_b = (SELECT memberid FROM Members WHERE username=$2)'
@@ -78,7 +93,7 @@ router.post("/incoming", (req, res) => {
                 error: err
             })
         });
-    } else {
+    } else if (!decision && passCheck) {
         //deny request = remove from database.
         let query = 'DELETE FROM Contacts WHERE memberid_a = (SELECT memberid FROM Members WHERE username=$2) AND memberid_b = (SELECT memberid FROM Members WHERE username=$1) AND verified = 0'
         db.none(query, [clientUsername, otherUsername])
